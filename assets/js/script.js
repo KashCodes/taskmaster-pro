@@ -212,6 +212,67 @@ $("#remove-tasks").on("click", function () {
   saveTasks();
 });
 
+// jQuery UI Sortable //
+
+// Using the jQuery selector to find all 'list-group' elements with the <ul> tag then calling the JQuery UI sortable method on them. 
+$(".card .list-group").sortable({
+  connectWith: $(".card .list-group"),
+  /*We've added a few more options like helper: "clone" that tells jQuery to create a copy of the dragged element and move the copy instead of the original. This is necessary to prevent click events from accidentally triggering on the original element. We also added several event listeners like activate, over, and out.*/
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",
+  activate: function(event) {
+    console.log("activate", this);
+  },
+  deactivate: function(event) {
+    console.log("deactivate", this);
+  },
+  over: function(event) {
+    console.log("over", event.target);
+  },
+  out: function(event) {
+    console.log("out", event.target);
+  },
+  // changed to a jQuery 'this' log by wrapping it in '$()'
+  update: function(event) {
+    // array to store the task data in
+    var tempArr = [];
+
+     // jQuery's 'each()' loop over current set of children in sortable list, pushing text values into a new tasks array.
+    $(this).children().each(function() {
+      var text = $(this)
+      // jQuery's 'find()' will strip out the task's description and due date through the child DOM elements.
+    .find("p")
+    .text()
+    .trim();
+
+    var date = $(this)
+      .find("span")
+      .text()
+      .trim();
+
+    // add task data to the temp array as an object
+    tempArr.push({
+      text: text,
+      date: date
+      });
+    });
+
+    /* Use tempArr to overwrite whats currently saved in tasks object. Just like we did with the blur events. Each list id attribute matches a properon tasks. (i.e. id="list-review"). By doing this when you refresh the lists will stay in their respective columns. */
+    
+    // trim down list's ID to match object property
+    var arrName = $(this)
+    .attr("id")
+    .replace("list-", "");
+
+    // update array on tasks object and save
+    tasks[arrName] = tempArr;
+    saveTasks();
+
+  console.log(tempArr);
+  }
+});
+
 
 // load tasks for the first time
 loadTasks();
