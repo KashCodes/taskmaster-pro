@@ -42,6 +42,42 @@ var saveTasks = function () {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+
+// modal was triggered
+$("#task-form-modal").on("show.bs.modal", function () {
+  // clear values
+  $("#modalTaskDescription, #modalDueDate").val("");
+});
+
+// modal is fully visible
+$("#task-form-modal").on("shown.bs.modal", function () {
+  // highlight textarea
+  $("#modalTaskDescription").trigger("focus");
+});
+
+// save button in modal was clicked
+$("#task-form-modal .btn-primary").click(function () {
+  // get form values
+  var taskText = $("#modalTaskDescription").val();
+  var taskDate = $("#modalDueDate").val();
+
+  if (taskText && taskDate) {
+    createTask(taskText, taskDate, "toDo");
+
+    // close modal
+    $("#task-form-modal").modal("hide");
+
+    // save in tasks array
+    tasks.toDo.push({
+      text: taskText,
+      date: taskDate,
+    });
+
+    saveTasks();
+  }
+});
+
+// when a task is clicked it can now be editted
 $(".list-group").on("click", "p", function() {
   var text = $(this)
     .text()
@@ -55,10 +91,10 @@ $(".list-group").on("click", "p", function() {
   // This will specifically swap out the <p> that was created with the new <textarea> and append it to the page.
   $(this).replaceWith(textInput);
 
-  //the user has to click the <textarea> to begin editing. We want to highlight the input box when that starts. "Focus" can also trigger the event when clicked. We don't have a save button to update the task yet though. 
+  //the user has to click the <textarea> to begin editing. We want to highlight the input box when that starts. Auto "Focus" can also trigger the event when clicked. We don't have a save button to update the task yet though. 
   textInput.trigger("focus");
 
-  // We can revert the <textarea> back when it goes out of focus in lieu of a 'Save' button. The blur 'trigger; event will activate as soon as the user interacts with anything other than the <textarea> el.
+  // editable field was un-focused - We can revert the <textarea> back when it goes out of focus in lieu of a 'Save' button. The blur 'trigger; event will activate as soon as the user interacts with anything other than the <textarea> el.
   $(".list-group").on("blur", "textarea", function() {
     // When that happens we need to collect the data of the current value of the element, the parent element's ID, and the element's position in the list. These will update the correct task in the 'tasks' object. 
 
@@ -165,39 +201,7 @@ $(".list-group").on("click", "span", function() {
     $(this).replaceWith(taskSpan);
   });
 
-// modal was triggered
-$("#task-form-modal").on("show.bs.modal", function () {
-  // clear values
-  $("#modalTaskDescription, #modalDueDate").val("");
-});
 
-// modal is fully visible
-$("#task-form-modal").on("shown.bs.modal", function () {
-  // highlight textarea
-  $("#modalTaskDescription").trigger("focus");
-});
-
-// save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function () {
-  // get form values
-  var taskText = $("#modalTaskDescription").val();
-  var taskDate = $("#modalDueDate").val();
-
-  if (taskText && taskDate) {
-    createTask(taskText, taskDate, "toDo");
-
-    // close modal
-    $("#task-form-modal").modal("hide");
-
-    // save in tasks array
-    tasks.toDo.push({
-      text: taskText,
-      date: taskDate,
-    });
-
-    saveTasks();
-  }
-});
 
 // remove all tasks
 $("#remove-tasks").on("click", function () {
@@ -207,12 +211,6 @@ $("#remove-tasks").on("click", function () {
   }
   saveTasks();
 });
-
-
-
-
-
-
 
 
 // load tasks for the first time
