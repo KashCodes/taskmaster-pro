@@ -273,6 +273,26 @@ $(".card .list-group").sortable({
   }
 });
 
+// jQuery Trash Drop //
+
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function(event, ui) {
+    // works like regular js remove() and will remove element entirely. 
+    ui.draggable.remove();
+    console.log("drop");
+  },
+  over: function(event, ui) {
+    console.log("over");
+  },
+  out: function(event, ui) {
+    console.log("out");
+  }
+});
+
+
+
 
 // load tasks for the first time
 loadTasks();
