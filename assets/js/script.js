@@ -46,11 +46,11 @@ var saveTasks = function () {
 };
 
 // Audit tasks
-var auditTask = function(taskEl) {
-  // get date from task element and retrieve text, then trim 
+var auditTask = function (taskEl) {
+  // get date from task element and retrieve text, then trim
   var date = $(taskEl).find("span").text().trim();
   // ensure it worked
-  console.log(date); 
+  console.log(date);
 
   // convert (parse) to moment object at 5:00pm
   var time = moment(date, "L").set("hour", 17);
@@ -69,8 +69,6 @@ var auditTask = function(taskEl) {
     $(taskEl).addClass("list-group-item-warning");
   }
 };
-
-
 
 // jQuery UI Sortable //
 
@@ -142,6 +140,14 @@ $("#trash").droppable({
   out: function (event, ui) {
     console.log(ui);
   },
+});
+
+// Date Picker //
+
+// date calender pop up feature when clicking date feilds
+$("#modalDueDate").datepicker({
+  // can not slect dates in the past - by passing object through .datepicker()
+  minDate: 1,
 });
 
 // modal was triggered
@@ -259,11 +265,11 @@ $(".list-group").on("click", "span", function () {
   // enable jquery ui datepicker
   dateInput.datepicker({
     minDate: 1,
-    // the onClose will ensure that the date will reappear as a <span> element even if we click out the date editor without making a change. Versus it remaining a <input> element bc we tried to edit it, but did not. 
-    onClose: function() {
+    // the onClose will ensure that the date will reappear as a <span> element even if we click out the date editor without making a change. Versus it remaining a <input> element bc we tried to edit it, but did not.
+    onClose: function () {
       // when calendar is closed, force a "change" event on the `dateInput`
       $(this).trigger("change");
-    }
+    },
   });
 
   // automatically focus on new element
@@ -299,18 +305,6 @@ $(".list-group").on("change", "input[type='text']", function () {
   // Pass task's <li> element into auditTask() to check new due date
   auditTask($(taskSpan).closest(".list-group-item"));
 });
-
-
-
-// Date Picker // 
-
-// date calender pop up feature when clicking date feilds
-$("#modalDueDate").datepicker({
-  // can not slect dates in the past - by passing object through .datepicker()
-  minDate: 1
-});
-
-
 
 // remove all tasks
 $("#remove-tasks").on("click", function () {
