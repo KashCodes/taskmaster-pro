@@ -265,5 +265,13 @@ $("#remove-tasks").on("click", function () {
   saveTasks();
 });
 
+// Date Picker // 
+
+// date calender pop up feature when clicking date feilds
+$("#modalDueDate").datepicker({
+  // can not slect dates in the past - by passing object through .datepicker()
+  minDate: 1
+});
+
 // load tasks for the first time
 loadTasks();
