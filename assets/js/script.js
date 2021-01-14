@@ -164,7 +164,7 @@ $(".list-group").on("click", "p", function () {
   textInput.trigger("focus");
 });
 
-// editable field was un-focused - We can revert the <textarea> back when it goes out of focus in lieu of a 'Save' button. The blur 'trigger; event will activate as soon as the user interacts with anything other than the <textarea> el.
+// editable field was un-focused - We can revert the <textarea> back when it goes out of focus in lieu of a 'Save' button. The blur 'trigger' event will activate as soon as the user interacts with anything other than the <textarea> el.
 $(".list-group").on("blur", "textarea", function () {
   // When that happens we need to collect the data of the current value of the element, the parent element's ID, and the element's position in the list. These will update the correct task in the 'tasks' object.
 
@@ -226,13 +226,23 @@ $(".list-group").on("click", "span", function () {
   // swap out elements
   $(this).replaceWith(dateInput);
 
+  // enable jquery ui datepicker
+  dateInput.datepicker({
+    minDate: 1,
+    // the onClose will ensure that the date will reappear as a <span> element even if we click out the date editor without making a change. Versus it remaining a <input> element bc we tried to edit it, but did not. 
+    onClose: function() {
+      // when calendar is closed, force a "change" event on the `dateInput`
+      $(this).trigger("change");
+    }
+  });
+
   // automatically focus on new element
   dateInput.trigger("focus");
 });
 
 //Next we need to convert the date back to a <span>
 // value of due date was changed
-$(".list-group").on("blur", "input[type='text']", function () {
+$(".list-group").on("change", "input[type='text']", function () {
   // get current text
   var date = $(this).val();
 
