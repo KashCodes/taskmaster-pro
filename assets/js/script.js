@@ -316,14 +316,12 @@ $("#remove-tasks").on("click", function () {
   saveTasks();
 });
 
-
-// check page for time updates every 30 mins 
+// check page for time updates every 30 mins
 setInterval(function () {
-  $(".card .list-group-item").each(function(index, el) {
+  $(".card .list-group-item").each(function (index, el) {
     auditTask(el);
   });
 }, 1800000);
-
 
 // load tasks for the first time
 loadTasks();
