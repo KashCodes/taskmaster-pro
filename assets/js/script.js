@@ -81,15 +81,19 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function (event, ui) {
+    $(this).addClass("dropover")
     console.log(ui);
   },
   deactivate: function (event, ui) {
+    $(this).removeClass("dropover")
     console.log(ui);
   },
   over: function (event) {
+    $(this).find("connectWith").addClass("dropover-active") 
     console.log(event);
   },
   out: function (event) {
+    $(this).find("connectWith").removeClass("dropover-active")
     console.log(event);
   },
   // changed to a jQuery 'this' log by wrapping it in '$()'
